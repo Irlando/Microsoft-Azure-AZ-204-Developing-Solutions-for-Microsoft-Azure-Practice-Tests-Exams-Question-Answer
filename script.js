@@ -1278,8 +1278,15 @@ let questions = [
 let currentQuestionIndex = 0;
 let score = 0;
 let selectedOptions = new Set();
+let userName = '';
+let userRole = '';
 
 // Elementos do DOM
+const formContainer = document.getElementById('form-container');
+const quizContainer = document.getElementById('quiz-container');
+const nameInput = document.getElementById('name');
+const roleInput = document.getElementById('role');
+const startButton = document.getElementById('start-quiz');
 const questionElement = document.getElementById('question');
 const questionImageElement = document.getElementById('question-image');
 const optionsContainer = document.getElementById('options-container');
@@ -1290,10 +1297,38 @@ const scoreElement = document.getElementById('score');
 const currentQuestionElement = document.getElementById('current-question');
 const totalQuestionsElement = document.getElementById('total-questions');
 
-// Inicializar o quiz
-function initializeQuiz() {
-    totalQuestionsElement.textContent = questions.length;
-    displayQuestion();
+// Função para salvar resultados no CSV
+function saveResultsToCSV() {
+    const date = new Date().toISOString();
+    const csvContent = `Nome,Cargo/Função,Pontuação,Total de Questões,Data e Hora\n${userName},${userRole},${score},${questions.length},${date}`;
+    
+    // Criar um blob com o conteúdo CSV
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    
+    // Criar um link para download automático
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', 'quiz_results.csv');
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+// Iniciar o quiz
+function startQuiz() {
+    userName = nameInput.value.trim();
+    userRole = roleInput.value.trim();
+    
+    if (userName && userRole) {
+        formContainer.style.display = 'none';
+        quizContainer.style.display = 'block';
+        totalQuestionsElement.textContent = questions.length;
+        displayQuestion();
+    } else {
+        alert('Por favor, preencha todos os campos!');
+    }
 }
 
 // Exibir a questão atual
@@ -1379,14 +1414,17 @@ function endQuiz() {
     finalScore.className = 'final-score';
     finalScore.innerHTML = `
         <h2>Quiz Concluído!</h2>
+        <p>Parabéns ${userName}!</p>
         <p>Sua pontuação final: ${score} de ${questions.length}</p>
+        <button onclick="saveResultsToCSV()">Salvar Resultados</button>
         <button onclick="location.reload()">Jogar Novamente</button>
     `;
     optionsContainer.appendChild(finalScore);
 }
 
 // Event Listeners
+startButton.addEventListener('click', startQuiz);
 nextButton.addEventListener('click', nextQuestion);
 
-// Iniciar o quiz
-initializeQuiz(); 
+// Inicializar o quiz
+quizContainer.style.display = 'none';
