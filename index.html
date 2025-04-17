@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz AZ-204 - Desenvolvendo Soluções para Microsoft Azure</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Quiz AZ-204</h1>
+            <p>Desenvolvendo Soluções para Microsoft Azure</p>
+            <div class="score-container">
+                <span>Pontuação: </span>
+                <span id="score">0</span>
+            </div>
+        </header>
+
+        <main>
+            <div id="quiz-container">
+                <div id="question-container">
+                    <h2 id="question"></h2>
+                    <div id="options-container"></div>
+                </div>
+                <div id="result-container" class="hidden">
+                    <p id="result-message"></p>
+                    <button id="next-question">Próxima Questão</button>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <div class="progress-container">
+                <span>Questão </span>
+                <span id="current-question">1</span>
+                <span> de </span>
+                <span id="total-questions">0</span>
+            </div>
+        </footer>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html> 
